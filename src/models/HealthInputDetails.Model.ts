@@ -25,7 +25,7 @@ enum HealthGoal {
 }
 
 //todo: make a separate monthly and weekly health report schema
-class HealthInputClass extends TimeStamps {
+class UserHealthClass extends TimeStamps {
   @prop({ required: true })
   public gender?: Gender;
 
@@ -45,4 +45,4 @@ class HealthInputClass extends TimeStamps {
   public healthGoal?: HealthGoal;
 }
 
-export const HealthInputDetails = getModelForClass(HealthInputClass);
+export const UserHealthDetails = getModelForClass(UserHealthClass);

@@ -28,9 +28,6 @@ class UserClass extends TimeStamps {
   @prop({ required: true })
   public password!: string;
 
-  // @prop()
-  // public profileImage?: string;
-
   @prop()
   public googleId?: string;
 
