@@ -6,6 +6,8 @@ declare global {
     interface Request {
       user?: UserDocument;
     }
-    interface ProcessEnv extends Z.infer<typeof envVariables>{}
+  }
+  namespace NodeJS {
+    interface ProcessEnv extends z.infer<typeof envVariables> {}
   }
 }

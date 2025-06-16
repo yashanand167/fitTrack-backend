@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-export const envVariables = z.object({
+const envVariables = z.object({
   MONGODB_URI: z.string(),
-  PORT: z.number(),
+  PORT: z.string(),
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
   CLIENT_URL: z.string(),
@@ -10,4 +10,4 @@ export const envVariables = z.object({
   BETTER_AUTH_URL: z.string()
 });
 
-envVariables.parse(process.env);
+export const env = envVariables.parse(process.env);

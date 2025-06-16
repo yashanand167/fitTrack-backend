@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { env } from "../zod/env.schema";
 dotenv.config();
 
 export async function connectDB(): Promise<void> {
-  const uri = process.env.MONGODB_URI as string;
+  const uri = env.MONGODB_URI;
 
   if (!uri) {
     throw new Error("MONGODB_URI is not defined in environment variables.");

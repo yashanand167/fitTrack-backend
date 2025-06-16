@@ -5,20 +5,21 @@ dotenv.config();
 import express, { urlencoded } from "express";
 import type { Response } from "express";
 import { toNodeHandler } from "better-auth/node";
-import auth from "./config/auth"; 
+import auth from "./config/auth";
 import router from "./routes/Auth.route";
 import cors from "cors";
 import morgan from "morgan";
 import { connectDB } from "./config/db";
+import { env } from "./zod/env.schema";
 
 const app = express();
-const port = process.env.PORT ?? 3000;
+const port = env.PORT;
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use(
   cors({
-    origin: ["http://localhost:8080", process.env.CLIENT_URL as string],
+    origin: ["http://localhost:8080", env.CLIENT_URL],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
