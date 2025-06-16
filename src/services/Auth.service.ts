@@ -16,9 +16,6 @@ interface SignInData {
   password: string;
 }
 
-//configure googleAuth
-interface GoogleSignIn {}
-
 export class UserService {
   public async signUpUser(data: SignUpData) {
     const parsedResult = signUpSchema.safeParse(data);
@@ -40,12 +37,12 @@ export class UserService {
       const fullName = [firstName, lastName].filter(Boolean).join(" ") || "Unnamed User";
 
       const { headers, response } = await auth.api.signUpEmail({
-        returnHeaders: true,
         body: {
           name: fullName,
           email,
           password,
         },
+        returnHeaders: true,
       });
 
       const externalId = response?.user?.id;
@@ -102,17 +99,16 @@ export class UserService {
           password: password,
           rememberMe: true,
         },
-        asResponse: true,
+        returnHeaders: true,
       });
 
       return {
         message: "User Logged In",
         authResponse: response,
+        
       };
     } catch (error) {
       throw new APIError(500, "Server Error");
     }
   }
-
-  public async googleAuth() {}
 }
