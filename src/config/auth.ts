@@ -1,8 +1,9 @@
 import { betterAuth } from "better-auth";
+import { env } from "../zod/env.schema";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 
-const client = new MongoClient(process.env.MONGODB_URI as string);
+const client = new MongoClient(env.MONGODB_URI);
 const db = client.db();
 
 const auth = betterAuth({
