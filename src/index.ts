@@ -8,6 +8,7 @@ import { toNodeHandler } from "better-auth/node";
 import auth from "./config/auth";
 import router from "./routes/Auth.route";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { connectDB } from "./config/db";
 import { env } from "./zod/env.schema";
@@ -28,6 +29,7 @@ app.use(
 
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(morgan("dev"));
 app.use("/api/v1/users", router);
 
