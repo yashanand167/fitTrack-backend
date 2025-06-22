@@ -1,4 +1,3 @@
-import { betterAuth, boolean } from "better-auth/*";
 import { User } from "../models/UserModel";
 import { APIError } from "../utils/APIutil";
 import auth from "../config/auth";
@@ -34,7 +33,8 @@ export class UserService {
     }
 
     try {
-      const fullName = [firstName, lastName].filter(Boolean).join(" ") || "Unnamed User";
+      const fullName =
+        [firstName, lastName].filter(Boolean).join(" ") || "Unnamed User";
 
       const { headers, response } = await auth.api.signUpEmail({
         body: {
@@ -105,10 +105,17 @@ export class UserService {
       return {
         message: "User Logged In",
         authResponse: response,
-        
       };
     } catch (error) {
       throw new APIError(500, "Server Error");
+    }
+  }
+
+  public async getProfile() {
+    try {
+      
+    } catch (error) {
+      
     }
   }
 }

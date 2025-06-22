@@ -1,48 +1,51 @@
-import { getModelForClass, prop } from "@typegoose/typegoose";
+import { getModelForClass, prop, Ref } from "@typegoose/typegoose";
 import { User } from "./UserModel";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 
-enum Gender {
-  MALE,
-  FEMALE,
+export enum Gender {
+  MALE = "male",
+  FEMALE = "female",
 }
 
-enum BodyType {
-  SKINNY,
-  FAT,
-  NORMAL,
-  ATHLETE,
-  BULKY,
-  MUSCULAR,
-  OBESE,
+export enum BodyType {
+  SKINNY = "skinny",
+  FAT = "fat",
+  NORMAL = "normal",
+  ATHLETE = "athlete",
+  BULKY = "bulky",
+  MUSCULAR = "muscular",
+  OBESE = "obese",
 }
 
-enum HealthGoal {
-  MUSCLE_GAIN,
-  FAT_LOSS,
-  BUILDING_STRENGTH,
-  BULKING,
+export enum HealthGoal {
+  MUSCLE_GAIN = "muscle_gain",
+  FAT_LOSS = "fat_loss",
+  BUILDING_STRENGTH = "building_strength",
+  BULKING = "bulking",
 }
 
-//todo: make a separate monthly and weekly health report schema
 class UserHealthClass extends TimeStamps {
-  @prop({ required: true })
-  public gender?: Gender;
+
+  @prop({ required: true, enum: Gender })
+  public gender!: Gender;
 
   @prop({ required: true, min: 50, max: 250 })
-  public heightInCM?: number;
+  public heightInCM!: number;
 
   @prop({ required: true, min: 10, max: 300 })
-  public weightInKG?: number;
+  public weightInKG!: number;
 
-  @prop({ required: true })
-  public bodyType?: BodyType;
+  @prop({ required: true, enum: BodyType })
+  public bodyType!: BodyType;
+  
+  @prop({ required: true, enum: HealthGoal })
+  public healthGoal!: HealthGoal;
 
-  @prop({})
-  public BMIReport?: string
-
-  @prop({ required: true })
-  public healthGoal?: HealthGoal;
+  public calculateBMI(): number {
+    const heightInMeters = this.heightInCM / 100;
+    const bmi = this.weightInKG / (heightInMeters * heightInMeters);
+    return Math.round(bmi * 10) / 10;
+  }
 }
 
 export const UserHealthDetails = getModelForClass(UserHealthClass);

@@ -8,6 +8,11 @@ import {
 import bcrypt from "bcryptjs";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 
+enum UserRole {
+  ADMIN = "admin",
+  USER = "user",
+}
+
 @pre<UserClass>("save", async function () {
   if (this.isModified("password")) {
     const salt = 10;
@@ -30,6 +35,9 @@ class UserClass extends TimeStamps {
 
   @prop()
   public googleId?: string;
+
+  @prop({ enum: UserRole, default: UserRole.USER, required: true })
+  public userRole?: UserRole;
 
   @prop({ type: [String], default: ["email"] })
   public providers?: string[];
