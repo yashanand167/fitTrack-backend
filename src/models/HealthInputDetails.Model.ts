@@ -24,7 +24,7 @@ export enum HealthGoal {
   BULKING = "bulking",
 }
 
-class UserHealthClass extends TimeStamps {
+export class UserHealthClass extends TimeStamps {
 
   @prop({ required: true, enum: Gender })
   public gender!: Gender;

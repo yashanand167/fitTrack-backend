@@ -4,14 +4,11 @@ import {
   pre,
   modelOptions,
   DocumentType,
+  Ref,
 } from "@typegoose/typegoose";
 import bcrypt from "bcryptjs";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
-
-enum UserRole {
-  ADMIN = "admin",
-  USER = "user",
-}
+import { UserHealthClass } from "./HealthInputDetails.Model";
 
 @pre<UserClass>("save", async function () {
   if (this.isModified("password")) {
@@ -36,14 +33,14 @@ class UserClass extends TimeStamps {
   @prop()
   public googleId?: string;
 
-  @prop({ enum: UserRole, default: UserRole.USER, required: true })
-  public userRole?: UserRole;
-
   @prop({ type: [String], default: ["email"] })
   public providers?: string[];
 
   @prop({ default: false })
   public emailVerified?: boolean;
+
+  @prop({ ref: () => UserHealthClass })
+  public healthDetails?: Ref<UserHealthClass>;
 
   public async comparePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);

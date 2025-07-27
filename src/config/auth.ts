@@ -10,13 +10,17 @@ const auth = betterAuth({
   database: mongodbAdapter(db),
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true
+    requireEmailVerification: true,
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    expiresIn: 30 * 60 * 1000
   },
   socialProviders: {
     google: {
       prompt: "select_account",
-      clientId: env.GOOGLE_CLIENT_ID ,
-      clientSecret: env.GOOGLE_CLIENT_SECRET ,
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     },
   },
   rateLimit: {

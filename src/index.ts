@@ -31,6 +31,8 @@ app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
+
+
 app.use("/api/v1/users", router);
 
 app.get("/stats", (_, res: Response) => {
