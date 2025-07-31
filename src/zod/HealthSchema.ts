@@ -1,24 +1,24 @@
 import z from "zod";
 
 export const userHealth = z.object({
-  height: z.number(),
-  weight: z.number(),
-  currentImage: z.string(),
-  Gender: z.enum(["Male", "Female"]),
-  BodyType: z.enum([
-    "SKINNY",
-    "FAT",
-    "NORMAL",
-    "ATHLETE",
-    "BULKY",
-    "MUSCULAR",
-    "OBESE",
+  heightInCM: z.number().min(50).max(250),
+  weightInKG: z.number().min(10).max(300),
+  gender: z.enum(["male", "female"]),
+  bodyType: z.enum([
+    "skinny",
+    "fat",
+    "normal",
+    "athlete",
+    "bulky",
+    "muscular",
+    "obese",
   ]),
-  HealthGoal: z.enum([
-    "MUSCLE_GAIN",
-    "FAT_LOSS",
-    "BUILDING_STRENGTH",
-    "BULKING",
+  healthGoal: z.enum([
+    "muscle_gain",
+    "fat_loss",
+    "building_strength",
+    "bulking",
   ]),
-  BMIReport: z.string(),
 });
+
+export type userHealthInput = z.infer<typeof userHealth>

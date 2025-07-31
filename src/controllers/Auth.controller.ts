@@ -1,27 +1,29 @@
-import { Request, Response } from "express";
-import { UserService } from "../services/Auth.service";
 import { asyncHandler } from "../middlewares/AsyncHandler.middleware";
-export class AuthController {
-  private userService: UserService;
+import { AuthService } from "../services/AuthService";
+import type { Request, Response } from "express";
 
-  constructor() {
-    this.userService = new UserService();
-  }
-  public signUp = asyncHandler(async (req: Request, res: Response) => {
-    const result = await this.userService.signUpUser(req.body);
+export class AuthController{
+    private authService: AuthService
 
-    return res.status(201).json({
-      ...result,
-      message: "User Created Successsfully",
-    });
-  });
+    constructor(){
+        this.authService = new AuthService();
+    }
 
-  public signIn = asyncHandler(async (req: Request, res: Response) => {
-    const result = await this.userService.signInUser(req.body);
+    public signUp = asyncHandler(async(req: Request, res: Response) => {
+        const result = await this.authService.userSignUp(req.body);
 
-    return res.status(201).json({
-      ...result,
-      message: "User signed In",
-    });
-  });
+        return res.status(201).json({
+            ...result,
+            message: "User signed up successfully"
+        })
+    })
+
+    public signIn = asyncHandler(async(req: Request, res: Response) => {
+        const result = await this.authService.userSignIn(req.body);
+
+        return res.status(201).json({
+            ...result,
+            message: "User Signed in successfully"
+        })
+    })
 }

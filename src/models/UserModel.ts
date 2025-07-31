@@ -9,6 +9,7 @@ import {
 import bcrypt from "bcryptjs";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { UserHealthClass } from "./HealthInputDetails.Model";
+import { ActivityClass } from "./Activity.Model";
 
 @pre<UserClass>("save", async function () {
   if (this.isModified("password")) {
@@ -30,17 +31,14 @@ class UserClass extends TimeStamps {
   @prop({ required: true })
   public password!: string;
 
-  @prop()
+  @prop({ unique: true, sparse: true })
   public googleId?: string;
-
-  @prop({ type: [String], default: ["email"] })
-  public providers?: string[];
-
-  @prop({ default: false })
-  public emailVerified?: boolean;
 
   @prop({ ref: () => UserHealthClass })
   public healthDetails?: Ref<UserHealthClass>;
+
+  @prop({ref: () => ActivityClass})
+  public userActivity?: Ref<ActivityClass>
 
   public async comparePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);

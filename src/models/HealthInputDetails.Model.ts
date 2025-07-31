@@ -1,5 +1,4 @@
-import { getModelForClass, prop, Ref } from "@typegoose/typegoose";
-import { User } from "./UserModel";
+import { getModelForClass, prop, modelOptions, DocumentType } from "@typegoose/typegoose";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 
 export enum Gender {
@@ -24,8 +23,8 @@ export enum HealthGoal {
   BULKING = "bulking",
 }
 
+@modelOptions({ schemaOptions: { timestamps: true } })
 export class UserHealthClass extends TimeStamps {
-
   @prop({ required: true, enum: Gender })
   public gender!: Gender;
 
@@ -37,7 +36,7 @@ export class UserHealthClass extends TimeStamps {
 
   @prop({ required: true, enum: BodyType })
   public bodyType!: BodyType;
-  
+
   @prop({ required: true, enum: HealthGoal })
   public healthGoal!: HealthGoal;
 
@@ -49,3 +48,4 @@ export class UserHealthClass extends TimeStamps {
 }
 
 export const UserHealthDetails = getModelForClass(UserHealthClass);
+export type HealthDocument = DocumentType<UserHealthClass>

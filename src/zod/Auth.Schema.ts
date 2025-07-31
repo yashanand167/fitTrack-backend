@@ -15,17 +15,14 @@ export const passwordSchema = z
 export const signUpSchema = z.object({
   email: z.string().email("Invalid email format"),
   password: passwordSchema,
-  firstName: z
-    .string()
-    .min(3, "Name must be at least 3 characters long")
-    .max(50, "Password must not be longer than 50 characters"),
-  lastName: z
-    .string()
-    .min(3, "LastName must be at least 3 characters long")
-    .max(50, "Password must not be longer than 50 characters"),
+  firstName: z.string().min(3, "Name must not be less than 3 characters").max(40,"Name must not be more than 40 characters"),
+  lastName: z.string().min(2,"At least 2 letters").max(40,"Can't be more than 40 letters")
 });
 
 export const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
   password: z.string(),
 });
+
+export type SignUpInput = z.infer<typeof signUpSchema>
+export type LoginInput = z.infer<typeof loginSchema>

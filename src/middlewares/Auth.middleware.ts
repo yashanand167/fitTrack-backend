@@ -1,21 +1,43 @@
-import { Request, Response } from "express";
-import { fromNodeHeaders } from "better-auth/node";
-import auth from "../config/auth";
+import type { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import { User } from '../models/UserModel';
+import { env } from '../zod/env.schema';
+import { IJwtPayload } from '../types/jwt.types';
 
-export const requireAuth = async (req: Request, res: Response) => {
+export const isAuthenticated = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const session = await auth.api.getSession({
-      headers: fromNodeHeaders(req.headers),
-    });
-    if (!session) {
-      return res.status(401).json({
-        error: "Unauthorized",
-      });
+    const authHeader = req.header('Authorization');
+    const token = authHeader?.split(' ')[1];
+
+    if (!token) {
+      res.status(401).json({ message: 'No token, authorization denied' });
+      return;
     }
-    return res.json(session);
+
+    if (!env.JWT_SECRET) {
+      res.status(500).json({ message: 'Server configuration error' });
+      return;
+    }
+
+    const decoded = jwt.verify(token, env.JWT_SECRET) as IJwtPayload;
+    
+    const user = await User.findById(decoded.userId).select('-password');
+    if (!user) {
+      res.status(401).json({ message: 'User not found' });
+      return;
+    }
+
+    req.user = user;
+    next();
   } catch (error) {
-    return res.status(500).json({
-      error: "Server Error",
-    });
+    if (error instanceof jwt.JsonWebTokenError) {
+      res.status(401).json({ message: 'Invalid token' });
+      return;
+    }
+    if (error instanceof jwt.TokenExpiredError) {
+      res.status(401).json({ message: 'Token expired' });
+      return;
+    }
+    res.status(500).json({ message: 'Server error' });
   }
-};
+}; 

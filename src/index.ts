@@ -4,19 +4,16 @@ dotenv.config();
 
 import express, { urlencoded } from "express";
 import type { Response } from "express";
-import { toNodeHandler } from "better-auth/node";
-import auth from "./config/auth";
-import router from "./routes/Auth.route";
+import router from "./routes";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { connectDB } from "./config/db";
 import { env } from "./zod/env.schema";
+import { limiter } from "./middlewares/RateLimiter";
 
 const app = express();
 const port = env.PORT;
-
-app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use(
   cors({
@@ -31,9 +28,9 @@ app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
+app.use(limiter);
 
-
-app.use("/api/v1/users", router);
+app.use("/api/v1",router);
 
 app.get("/stats", (_, res: Response) => {
   res.json({
