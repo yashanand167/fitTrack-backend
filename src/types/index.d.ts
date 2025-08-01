@@ -1,10 +1,11 @@
 import { UserDocument } from "../models/UserModel";
 import { envVariables } from "../zod/env.schema";
+import { UserClass } from "../models/UserModel";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: UserDocument;
+      user?: UserDocument<UserClass>;
     }
   }
   namespace NodeJS {

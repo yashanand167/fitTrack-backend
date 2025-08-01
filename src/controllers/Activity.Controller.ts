@@ -10,7 +10,13 @@ export class ActivityController {
     }
 
     public logActivity = asyncHandler(async(req: Request, res: Response) => {
-        const result = this.activityService.createActivityLog(req.body,req.user?.id);
+        
+        if(!req.user){
+            return res.status(400).json({
+                error: "Unauthorized"
+            })
+        }
+        const result = this.activityService.createActivityLog(req.body,req.user._id.toString());
 
        return res.status(201).json({
         ...result,
@@ -28,7 +34,7 @@ export class ActivityController {
     })
 
     public updateActivity = asyncHandler(async(req: Request, res: Response) => {
-        const result = this.activityService.updateActivityLog(req.body, req.user?.id);
+        const result = this.activityService.updateActivityLog(req.body, req.user?._id.toString());
 
         return res.status(201).json({
             ...result,

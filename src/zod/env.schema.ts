@@ -7,7 +7,8 @@ const envVariables = z.object({
   GOOGLE_CLIENT_SECRET: z.string(),
   CLIENT_URL: z.string(),
   GOOGLE_CLIENT_REDIRECT: z.string(),
-  JWT_SECRET: z.string()
+  JWT_SECRET: z.string(),
+  SESSION_SECRET: z.string()
 });
 
 export const env = envVariables.parse(process.env);

@@ -1,8 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/UserModel';
+import { User, UserClass } from '../models/UserModel';
 import { env } from '../zod/env.schema';
 import { IJwtPayload } from '../types/jwt.types';
+import { DocumentType } from '@typegoose/typegoose';
 
 export const isAuthenticated = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -27,7 +28,7 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
       return;
     }
 
-    req.user = user;
+    req.user = user as DocumentType<UserClass>;
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {

@@ -6,6 +6,7 @@ import {
   DocumentType,
   Ref,
 } from "@typegoose/typegoose";
+import { Types } from "mongoose";
 import bcrypt from "bcryptjs";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { UserHealthClass } from "./HealthInputDetails.Model";
@@ -18,7 +19,9 @@ import { ActivityClass } from "./Activity.Model";
   }
 })
 @modelOptions({ schemaOptions: { timestamps: true } })
-class UserClass extends TimeStamps {
+export class UserClass extends TimeStamps {
+  public _id!: Types.ObjectId;
+
   @prop({ required: true, trim: true })
   public firstName?: string;
 

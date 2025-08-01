@@ -11,6 +11,9 @@ import morgan from "morgan";
 import { connectDB } from "./config/db";
 import { env } from "./zod/env.schema";
 import { limiter } from "./middlewares/RateLimiter";
+import session from 'express-session';
+import sessionConfigs from "./config/sessionConfig";
+import passport from "passport";
 
 const app = express();
 const port = env.PORT;
@@ -27,6 +30,9 @@ app.use(
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(session(sessionConfigs));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(morgan("dev"));
 app.use(limiter);
 
