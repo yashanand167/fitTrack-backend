@@ -10,7 +10,7 @@ export class HealthController {
     }
 
     public createHealthDetails = asyncHandler(async(req: Request, res: Response) => {
-        const result = this.healthservice.createHealthDetails(req.body, req.user._id.toString());
+        const result = this.healthservice.createHealthDetails(req.body, req.user?.id);
 
         return res.status(201).json({
             ...result,
@@ -28,7 +28,7 @@ export class HealthController {
     })
 
     public updateHealthDetails = asyncHandler(async(req: Request, res: Response) => {
-        const result = this.healthservice.updateHealthDetails(req.body,req.user._id.toString());
+        const result = this.healthservice.updateHealthDetails(req.body,req.user?.id.toString());
 
         return res.status(201).json({
             ...result,
